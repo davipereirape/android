@@ -28,6 +28,13 @@ public class ListaAlunoActivity extends AppCompatActivity {
 
     }
 
+    // ATENTAR AO CICLO DE VIDA DA ACTIVITY
+    @Override
+    protected void onResume() {
+        super.onResume();
+        carregaLista();
+    }
+
     // criação do menu de quando seguramos um item de uma lista.
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, final ContextMenu.ContextMenuInfo menuInfo) {
@@ -51,13 +58,6 @@ public class ListaAlunoActivity extends AppCompatActivity {
         } );
     }
 
-    // ATENTAR AO CICLO DE VIDA DA ACTIVITY
-    @Override
-    protected void onResume() {
-        super.onResume();
-        carregaLista();
-    }
-
     private void carregaLista() {
         AlunoDAO dao = new AlunoDAO(this, null);
         List<Aluno> alunos = dao.buscaAlunos();
@@ -72,14 +72,26 @@ public class ListaAlunoActivity extends AppCompatActivity {
         // Menu quando seguramos a lista.
         registerForContextMenu(listaAlunos);
 
-        Button botaoNovoAluno = (Button) findViewById(R.id.novo_aluno);
+        // Evento de click em um item da lista
+        listaAlunos.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View item, int position, long id) {
+                Aluno aluno = (Aluno) listaAlunos.getItemAtPosition(position);
+                Intent intentVaiParaFormAlulo = new Intent(ListaAlunoActivity.this, FormularioActivity.class);
+                intentVaiParaFormAlulo.putExtra("aluno", aluno);
 
+                startActivity(intentVaiParaFormAlulo);
+            }
+        }
+        );
+
+        Button botaoNovoAluno = (Button) findViewById(R.id.novo_aluno);
         botaoNovoAluno.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intentVaiProFormulario = new Intent(ListaAlunoActivity.this, FormularioActivity.class);
                 startActivity(intentVaiProFormulario);
-
             }
         });
     }

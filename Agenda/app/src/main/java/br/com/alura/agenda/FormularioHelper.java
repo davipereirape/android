@@ -24,11 +24,11 @@ public class FormularioHelper {
          editTextTelefone= (EditText) activity.findViewById(R.id.formulario_telefone);
          editTextSite = (EditText) activity.findViewById(R.id.formulario_site);
          ratingBar = (RatingBar) activity.findViewById(R.id.formulario_nota);
+         aluno = new Aluno();
     }
 
     public Aluno getAluno()
     {
-        aluno = new Aluno();
         aluno.setNome(editTextNome.getText().toString());
         aluno.setEndereco(editTextEndereco.getText().toString());
         aluno.setNota(Double.valueOf(ratingBar.getRating()));
@@ -36,5 +36,15 @@ public class FormularioHelper {
         aluno.setTelefone(editTextTelefone.getText().toString());
 
         return aluno;
+    }
+
+    public void preencheFormulario(Aluno aluno)
+    {
+        editTextEndereco.setText(aluno.getEndereco());
+        editTextNome.setText(aluno.getNome());
+        editTextSite.setText(aluno.getSite());
+        editTextTelefone.setText(aluno.getTelefone());
+        ratingBar.setRating(aluno.getNota().floatValue());
+        this.aluno = aluno;
     }
 }

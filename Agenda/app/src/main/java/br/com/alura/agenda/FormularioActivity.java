@@ -24,7 +24,17 @@ public class FormularioActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_formulario);
 
+        // inicia o helper que será utilizado para fazer o merge entre a view e a classe aluno.
         helper = new FormularioHelper(this);
+
+        // Se a activity for chamada de outra tela e a tela passar algum parâmetro, o mesmo é recuperado.
+        Intent intent = getIntent();
+        Aluno aluno = (Aluno) intent.getSerializableExtra("aluno");
+
+        if (aluno != null)
+        {
+            helper.preencheFormulario(aluno);
+        }
 
         Button botaoSalvar = (Button) findViewById(R.id.formulario_salvar);
         botaoSalvar.setOnClickListener(new View.OnClickListener() {
@@ -35,7 +45,7 @@ public class FormularioActivity extends AppCompatActivity {
         });
     }
 
-    // Cria a tela de menu acima
+    // Cria a tela de menu de cima
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -61,7 +71,15 @@ public class FormularioActivity extends AppCompatActivity {
     {
         Aluno aluno = helper.getAluno();
         AlunoDAO alunoDAO = new AlunoDAO(FormularioActivity.this, null);
-        alunoDAO.insere(aluno);
+
+        if (aluno.getId() != null)
+        {
+            alunoDAO.altera(aluno);
+        }
+        else
+        {
+            alunoDAO.insere(aluno);
+        }
         alunoDAO.close();
 
         Toast.makeText(FormularioActivity.this, "Aluno " + aluno.getNome() + " Salvo!", Toast.LENGTH_SHORT).show();

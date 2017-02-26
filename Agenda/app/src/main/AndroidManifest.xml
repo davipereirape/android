@@ -12,7 +12,8 @@
             <intent-filter>
                 <!-- Define a activity main -->
                 <action android:name="android.intent.action.MAIN" />
-                <!-- LAUNCHER Diz qual activity fica disponível para esta aplicação -->
+                <!-- LAUNCHER Diz qual activity fica disponível para esta aplicação, no caso de chamadas externas ou
+                 interropções por conta de ligações. -->
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
